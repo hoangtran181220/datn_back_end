@@ -1,0 +1,2 @@
+May 17, 2022 9:08:43 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ VTS_CNTT_84; Mô hình dịch vụ Standalone

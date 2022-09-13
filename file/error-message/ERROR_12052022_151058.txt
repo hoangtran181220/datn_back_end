@@ -1,0 +1,11 @@
+May 12, 2022 3:10:58 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 12, 2022 3:10:59 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: MayEleven_Inventory_12052022_150537 success
+May 12, 2022 3:11:00 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: MayEleven_playbook_12052022_150537.yml success
+May 12, 2022 3:11:01 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: 
+java.io.FileNotFoundException: upload\2022-05-111\mariadb_uninstall_playbook_220511_191408.yml (The system cannot find the path specified)
+May 12, 2022 3:11:01 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: java.lang.NullPointerException

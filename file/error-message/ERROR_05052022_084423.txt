@@ -1,0 +1,204 @@
+May 05, 2022 8:44:23 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 05, 2022 8:44:24 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 05, 2022 8:44:25 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 05, 2022 8:44:26 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_uninstall_playbook_220504_114355.yml success
+May 05, 2022 8:44:26 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 05, 2022 8:44:26 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running playbook
+
+May 05, 2022 8:44:26 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_playbook_220504_114352.yml
+May 05, 2022 8:44:27 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ATTT@123
+[sudo] password for app: 
+
+May 05, 2022 8:44:28 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: 
+PLAY [Install MariaDB Master-to-Master Replication] ****************************
+
+TASK [Gathering Facts] *********************************************************
+
+May 05, 2022 8:44:50 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Modify OS max process, max openfiles] ************************************
+
+May 05, 2022 8:44:51 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item=mysql soft nofile 1000000)
+ok: [10.60.158.108] => (item=mysql soft nofile 1000000)
+ok: [10.60.158.107] => (item=mysql hard nofile 1000000)
+ok: [10.60.158.108] => (item=mysql hard nofile 1000000)
+
+May 05, 2022 8:44:52 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item=mysql soft nproc 1000000)
+ok: [10.60.158.108] => (item=mysql soft nproc 1000000)
+ok: [10.60.158.107] => (item=mysql hard nproc 1000000)
+ok: [10.60.158.108] => (item=mysql hard nproc 1000000)
+
+TASK [Modify OS swappiness] ****************************************************
+
+May 05, 2022 8:44:53 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Change vm.swappiness value immediately] **********************************
+changed: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Add MariaDB rules in iptables] *******************************************
+
+May 05, 2022 8:44:54 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.108] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.107] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.108] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+May 05, 2022 8:44:55 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Add VRRP rules in iptables] **********************************************
+ok: [10.60.158.107] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.108] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.107] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+May 05, 2022 8:44:56 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.108] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Restart iptables service] ************************************************
+
+May 05, 2022 8:44:57 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Check iptables service status] *******************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+May 05, 2022 8:44:58 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: 
+TASK [Create MariaDB installation user] ****************************************
+changed: [10.60.158.107]
+
+May 05, 2022 8:44:59 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108]
+
+TASK [Add MariaDB enviroment variables] ****************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Create MariaDB installation directories] *********************************
+
+May 05, 2022 8:45:00 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+
+May 05, 2022 8:45:01 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+ok: [10.60.158.107] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+ok: [10.60.158.108] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+
+May 05, 2022 8:45:02 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+ok: [10.60.158.107] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+
+May 05, 2022 8:45:03 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: ok: [10.60.158.107] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+
+TASK [Extract the files from the MariaDB tarball] ******************************
+
+May 05, 2022 8:46:19 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108]
+
+May 05, 2022 8:46:23 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.107]
+
+TASK [Modify MariaDB support-files] ********************************************
+
+May 05, 2022 8:46:24 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108] => (item={u'value': u'libexecdir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'libexecdir=/usr/local/mysql/bin'})
+changed: [10.60.158.107] => (item={u'value': u'libexecdir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'libexecdir=/usr/local/mysql/bin'})
+changed: [10.60.158.108] => (item={u'value': u'bindir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'bindir=/usr/local/mysql/bin'})
+changed: [10.60.158.107] => (item={u'value': u'bindir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'bindir=/usr/local/mysql/bin'})
+
+May 05, 2022 8:46:25 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108] => (item={u'value': u'basedir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/', u'key': u'basedir=/usr/local/mysql'})
+changed: [10.60.158.107] => (item={u'value': u'basedir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/', u'key': u'basedir=/usr/local/mysql'})
+changed: [10.60.158.108] => (item={u'value': u'datadir=/data/mariadb', u'key': u'datadir=/usr/local/mysql/data'})
+changed: [10.60.158.107] => (item={u'value': u'datadir=/data/mariadb', u'key': u'datadir=/usr/local/mysql/data'})
+
+TASK [Replace MariaDB default config file] *************************************
+
+May 05, 2022 8:46:26 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify MariaDB config file] **********************************************
+
+May 05, 2022 8:46:27 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108] => (item={u'value': u'socket = /data/mariadb/mysql.sock', u'key': u'socket = /u01/database/mysql.sock'})
+changed: [10.60.158.107] => (item={u'value': u'socket = /data/mariadb/mysql.sock', u'key': u'socket = /u01/database/mysql.sock'})
+changed: [10.60.158.108] => (item={u'value': u'tmpdir = /data/temp_db/mariadb', u'key': u'tmpdir = /temp_db'})
+
+May 05, 2022 8:46:28 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.107] => (item={u'value': u'tmpdir = /data/temp_db/mariadb', u'key': u'tmpdir = /temp_db'})
+changed: [10.60.158.108] => (item={u'value': u'slow-query-log-file = /logs/mariadb/mysqld.slow.log', u'key': u'slow_query_log_file = /var/log/mysql/mysqld.slow.log'})
+changed: [10.60.158.107] => (item={u'value': u'slow-query-log-file = /logs/mariadb/mysqld.slow.log', u'key': u'slow_query_log_file = /var/log/mysql/mysqld.slow.log'})
+changed: [10.60.158.108] => (item={u'value': u'pid-file = /data/mariadb/mysqld.pid', u'key': u'pid-file = /u01/database/mysql.pid'})
+
+May 05, 2022 8:46:29 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.107] => (item={u'value': u'pid-file = /data/mariadb/mysqld.pid', u'key': u'pid-file = /u01/database/mysql.pid'})
+changed: [10.60.158.108] => (item={u'value': u'innodb_buffer_pool_size = 5G', u'key': u'innodb_buffer_pool_size = 11G'})
+changed: [10.60.158.107] => (item={u'value': u'innodb_buffer_pool_size = 5G', u'key': u'innodb_buffer_pool_size = 11G'})
+changed: [10.60.158.108] => (item={u'value': u'log-error = /logs/mariadb/mysqld-error.log', u'key': u'log-error = /var/log/mysql/mysqld.error.log'})
+
+May 05, 2022 8:46:30 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.107] => (item={u'value': u'log-error = /logs/mariadb/mysqld-error.log', u'key': u'log-error = /var/log/mysql/mysqld.error.log'})
+changed: [10.60.158.108] => (item={u'value': u'datadir = /data/mariadb', u'key': u'datadir = /u01/database'})
+changed: [10.60.158.107] => (item={u'value': u'datadir = /data/mariadb', u'key': u'datadir = /u01/database'})
+changed: [10.60.158.108] => (item={u'value': u'log-bin = /logs/mariadb/binlog', u'key': u'log-bin = /logs/binlog'})
+
+May 05, 2022 8:46:31 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.107] => (item={u'value': u'log-bin = /logs/mariadb/binlog', u'key': u'log-bin = /logs/binlog'})
+
+TASK [Modify replication configuration] ****************************************
+skipping: [10.60.158.108] => (item={u'value': u'server-id = 2', u'key': u'server-id = 1'}) 
+skipping: [10.60.158.108] => (item={u'value': u'auto_increment_offset = 2', u'key': u'auto_increment_offset = 1'}) 
+changed: [10.60.158.107] => (item={u'value': u'server-id = 2', u'key': u'server-id = 1'})
+
+May 05, 2022 8:46:32 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.107] => (item={u'value': u'auto_increment_offset = 2', u'key': u'auto_increment_offset = 1'})
+
+TASK [Initializing the Data Directory] *****************************************
+
+May 05, 2022 8:46:42 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Start MariaDB service] ***************************************************
+
+May 05, 2022 8:46:44 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify root user MariaDB] ************************************************
+
+May 05, 2022 8:46:45 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: fatal: [10.60.158.108]: FAILED! => {"changed": true, "cmd": ["./mysql", "-Bse", "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Viettel#2021';RENAME USER 'root'@'localhost' TO 'quantri'@'localhost';"], "delta": "0:00:00.652086", "end": "2022-05-05 08:46:45.878883", "msg": "non-zero return code", "rc": 1, "start": "2022-05-05 08:46:45.226797", "stderr": "ERROR 1396 (HY000) at line 1: Operation ALTER USER failed for 'root'@'localhost'", "stderr_lines": ["ERROR 1396 (HY000) at line 1: Operation ALTER USER failed for 'root'@'localhost'"], "stdout": "", "stdout_lines": []}
+
+May 05, 2022 8:46:45 AM com.viettel.vhkt.common.SSHUploadFile writeLog
+INFO: 
+Setup failed
+May 05, 2022 8:46:45 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Finish playbook
+

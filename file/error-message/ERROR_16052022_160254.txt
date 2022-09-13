@@ -1,0 +1,24 @@
+May 16, 2022 4:02:54 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:04:57 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:05:20 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:06:27 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:06:58 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:07:13 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:08:13 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:12:51 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:12:58 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:13:02 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:18:21 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone
+May 16, 2022 4:20:12 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Không tìm thấy cấu hình inventory & Playbook của dịch vụ Dịch vụ mariadb (server); Mô hình dịch vụ Standalone

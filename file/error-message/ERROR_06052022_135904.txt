@@ -1,0 +1,52 @@
+May 06, 2022 1:59:04 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 06, 2022 1:59:15 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 06, 2022 1:59:26 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 06, 2022 1:59:36 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_uninstall_playbook_06052022_112805.yml success
+May 06, 2022 1:59:47 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 06, 2022 1:59:47 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running uninstall
+May 06, 2022 1:59:47 PM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory DV_MARIADB_uninstall_playbook_06052022_112805.yml
+ATTT@123
+[sudo] password for app: 
+
+PLAY [Uninstall MariaDB Master-to-Master Replication] **************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Delete MariaDB enviroment variables] *************************************
+fatal: [10.60.158.108]: FAILED! => {"msg": "Failed to change ownership of the temporary files Ansible needs to create despite connecting as a privileged user. Unprivileged become user would be unable to read the file."}
+fatal: [10.60.158.107]: FAILED! => {"msg": "Failed to change ownership of the temporary files Ansible needs to create despite connecting as a privileged user. Unprivileged become user would be unable to read the file."}
+
+PLAY RECAP *********************************************************************
+10.60.158.107              : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+10.60.158.108              : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
+
+Setup failed
+May 06, 2022 2:00:11 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Finish uninstall
+May 06, 2022 2:00:11 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Setup success
+May 06, 2022 2:00:11 PM com.viettel.vhkt.service.FileInventoryServiceImpl sendRequestUpdateSR
+INFO: Start send request update SR
+May 06, 2022 2:00:11 PM com.viettel.vhkt.service.FileInventoryServiceImpl sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null
+May 06, 2022 2:00:11 PM com.viettel.vhkt.service.FileInventoryServiceImpl sendRequestUpdateSR
+INFO: Start send request update SR
+May 06, 2022 2:00:11 PM com.viettel.vhkt.service.FileInventoryServiceImpl sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null
+May 06, 2022 2:00:11 PM com.viettel.vhkt.service.FileInventoryServiceImpl sendRequestUpdateSR
+INFO: Start send request update SR
+May 06, 2022 2:00:11 PM com.viettel.vhkt.service.FileInventoryServiceImpl sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null

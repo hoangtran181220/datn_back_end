@@ -1,0 +1,228 @@
+May 06, 2022 5:20:46 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 06, 2022 5:20:57 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 06, 2022 5:21:08 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 06, 2022 5:21:18 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_uninstall_playbook_06052022_143430.yml success
+May 06, 2022 5:21:28 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 06, 2022 5:21:30 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running playbook
+
+May 06, 2022 5:21:32 PM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_playbook_220504_114352.yml
+
+PLAY [Install MariaDB Master-to-Master Replication] ****************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Modify OS max process, max openfiles] ************************************
+changed: [10.60.158.108] => (item=mysql soft nofile 1000000)
+changed: [10.60.158.107] => (item=mysql soft nofile 1000000)
+changed: [10.60.158.108] => (item=mysql hard nofile 1000000)
+changed: [10.60.158.107] => (item=mysql hard nofile 1000000)
+changed: [10.60.158.108] => (item=mysql soft nproc 1000000)
+changed: [10.60.158.107] => (item=mysql soft nproc 1000000)
+changed: [10.60.158.108] => (item=mysql hard nproc 1000000)
+changed: [10.60.158.107] => (item=mysql hard nproc 1000000)
+
+TASK [Modify OS swappiness] ****************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Change vm.swappiness value immediately] **********************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Add MariaDB rules in iptables] *******************************************
+changed: [10.60.158.108] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.108] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Add VRRP rules in iptables] **********************************************
+changed: [10.60.158.108] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.108] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Restart iptables service] ************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Check iptables service status] *******************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Create MariaDB installation user] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Add MariaDB enviroment variables] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Create MariaDB installation directories] *********************************
+changed: [10.60.158.108] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+changed: [10.60.158.107] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+changed: [10.60.158.108] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+
+TASK [Extract the files from the MariaDB tarball] ******************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify MariaDB support-files] ********************************************
+changed: [10.60.158.107] => (item={u'value': u'libexecdir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'libexecdir=/usr/local/mysql/bin'})
+changed: [10.60.158.108] => (item={u'value': u'libexecdir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'libexecdir=/usr/local/mysql/bin'})
+changed: [10.60.158.108] => (item={u'value': u'bindir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'bindir=/usr/local/mysql/bin'})
+changed: [10.60.158.107] => (item={u'value': u'bindir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'bindir=/usr/local/mysql/bin'})
+changed: [10.60.158.108] => (item={u'value': u'basedir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/', u'key': u'basedir=/usr/local/mysql'})
+changed: [10.60.158.107] => (item={u'value': u'basedir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/', u'key': u'basedir=/usr/local/mysql'})
+changed: [10.60.158.108] => (item={u'value': u'datadir=/data/mariadb', u'key': u'datadir=/usr/local/mysql/data'})
+changed: [10.60.158.107] => (item={u'value': u'datadir=/data/mariadb', u'key': u'datadir=/usr/local/mysql/data'})
+
+TASK [Replace MariaDB default config file] *************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify MariaDB config file] **********************************************
+changed: [10.60.158.108] => (item={u'value': u'socket = /data/mariadb/mysql.sock', u'key': u'socket = /u01/database/mysql.sock'})
+changed: [10.60.158.107] => (item={u'value': u'socket = /data/mariadb/mysql.sock', u'key': u'socket = /u01/database/mysql.sock'})
+changed: [10.60.158.108] => (item={u'value': u'tmpdir = /data/temp_db/mariadb', u'key': u'tmpdir = /temp_db'})
+changed: [10.60.158.107] => (item={u'value': u'tmpdir = /data/temp_db/mariadb', u'key': u'tmpdir = /temp_db'})
+changed: [10.60.158.108] => (item={u'value': u'slow-query-log-file = /logs/mariadb/mysqld.slow.log', u'key': u'slow_query_log_file = /var/log/mysql/mysqld.slow.log'})
+changed: [10.60.158.107] => (item={u'value': u'slow-query-log-file = /logs/mariadb/mysqld.slow.log', u'key': u'slow_query_log_file = /var/log/mysql/mysqld.slow.log'})
+changed: [10.60.158.108] => (item={u'value': u'pid-file = /data/mariadb/mysqld.pid', u'key': u'pid-file = /u01/database/mysql.pid'})
+changed: [10.60.158.107] => (item={u'value': u'pid-file = /data/mariadb/mysqld.pid', u'key': u'pid-file = /u01/database/mysql.pid'})
+changed: [10.60.158.108] => (item={u'value': u'innodb_buffer_pool_size = 5G', u'key': u'innodb_buffer_pool_size = 11G'})
+changed: [10.60.158.107] => (item={u'value': u'innodb_buffer_pool_size = 5G', u'key': u'innodb_buffer_pool_size = 11G'})
+changed: [10.60.158.108] => (item={u'value': u'log-error = /logs/mariadb/mysqld-error.log', u'key': u'log-error = /var/log/mysql/mysqld.error.log'})
+changed: [10.60.158.107] => (item={u'value': u'log-error = /logs/mariadb/mysqld-error.log', u'key': u'log-error = /var/log/mysql/mysqld.error.log'})
+changed: [10.60.158.108] => (item={u'value': u'datadir = /data/mariadb', u'key': u'datadir = /u01/database'})
+changed: [10.60.158.108] => (item={u'value': u'log-bin = /logs/mariadb/binlog', u'key': u'log-bin = /logs/binlog'})
+changed: [10.60.158.107] => (item={u'value': u'datadir = /data/mariadb', u'key': u'datadir = /u01/database'})
+changed: [10.60.158.107] => (item={u'value': u'log-bin = /logs/mariadb/binlog', u'key': u'log-bin = /logs/binlog'})
+
+TASK [Modify replication configuration] ****************************************
+skipping: [10.60.158.108] => (item={u'value': u'server-id = 2', u'key': u'server-id = 1'}) 
+skipping: [10.60.158.108] => (item={u'value': u'auto_increment_offset = 2', u'key': u'auto_increment_offset = 1'}) 
+changed: [10.60.158.107] => (item={u'value': u'server-id = 2', u'key': u'server-id = 1'})
+changed: [10.60.158.107] => (item={u'value': u'auto_increment_offset = 2', u'key': u'auto_increment_offset = 1'})
+
+TASK [Initializing the Data Directory] *****************************************
+changed: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Start MariaDB service] ***************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify root user MariaDB] ************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Configure replication on Master] *****************************************
+skipping: [10.60.158.107] => (item="CREATE  USER 'repl'@'10.60.158.107' IDENTIFIED BY 'Viettel#123';") 
+skipping: [10.60.158.107] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.107';") 
+skipping: [10.60.158.107] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.107', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;") 
+skipping: [10.60.158.107] => (item="FLUSH PRIVILEGES;") 
+skipping: [10.60.158.107] => (item="reset master; ") 
+skipping: [10.60.158.107] => (item="start slave; ") 
+changed: [10.60.158.108] => (item="CREATE  USER 'repl'@'10.60.158.107' IDENTIFIED BY 'Viettel#123';")
+changed: [10.60.158.108] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.107';")
+changed: [10.60.158.108] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.107', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;")
+changed: [10.60.158.108] => (item="FLUSH PRIVILEGES;")
+changed: [10.60.158.108] => (item="reset master; ")
+changed: [10.60.158.108] => (item="start slave; ")
+
+TASK [Configure replication on Slave] ******************************************
+skipping: [10.60.158.108] => (item="CREATE  USER 'repl'@'10.60.158.108' IDENTIFIED BY 'Viettel#123';") 
+skipping: [10.60.158.108] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.108';") 
+skipping: [10.60.158.108] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.108', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;") 
+skipping: [10.60.158.108] => (item="FLUSH PRIVILEGES;") 
+skipping: [10.60.158.108] => (item="reset master; ") 
+skipping: [10.60.158.108] => (item="start slave; ") 
+changed: [10.60.158.107] => (item="CREATE  USER 'repl'@'10.60.158.108' IDENTIFIED BY 'Viettel#123';")
+changed: [10.60.158.107] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.108';")
+changed: [10.60.158.107] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.108', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;")
+changed: [10.60.158.107] => (item="FLUSH PRIVILEGES;")
+changed: [10.60.158.107] => (item="reset master; ")
+changed: [10.60.158.107] => (item="start slave; ")
+
+TASK [Check replication status MariaDB] ****************************************
+FAILED - RETRYING: Check replication status MariaDB (20 retries left).
+changed: [10.60.158.107]
+FAILED - RETRYING: Check replication status MariaDB (19 retries left).
+FAILED - RETRYING: Check replication status MariaDB (18 retries left).
+FAILED - RETRYING: Check replication status MariaDB (17 retries left).
+FAILED - RETRYING: Check replication status MariaDB (16 retries left).
+changed: [10.60.158.108]
+
+TASK [Create MariaDB backup file] **********************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify MariaDB backup file] **********************************************
+changed: [10.60.158.108] => (item={u'value': u'BACKUP_PATH=/backup/mariadb', u'key': u'BACKUP_PATH=/u03'})
+changed: [10.60.158.107] => (item={u'value': u'BACKUP_PATH=/backup/mariadb', u'key': u'BACKUP_PATH=/u03'})
+changed: [10.60.158.108] => (item={u'value': u'PATH=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin:$PATH', u'key': u'PATH=/u01/mariadb/bin:\\$PATH'})
+changed: [10.60.158.107] => (item={u'value': u'PATH=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin:$PATH', u'key': u'PATH=/u01/mariadb/bin:\\$PATH'})
+changed: [10.60.158.108] => (item={u'value': u'IP=10.60.158.108', u'key': u'IP=10.207.150.23'})
+changed: [10.60.158.107] => (item={u'value': u'IP=10.60.158.107', u'key': u'IP=10.207.150.23'})
+changed: [10.60.158.108] => (item={u'value': u'DBLISTFILE=/backup/mariadb/DatabasesNeedToDump.txt', u'key': u'DBLISTFILE=/u03/DatabasesNeedToDump.txt'})
+changed: [10.60.158.107] => (item={u'value': u'DBLISTFILE=/backup/mariadb/DatabasesNeedToDump.txt', u'key': u'DBLISTFILE=/u03/DatabasesNeedToDump.txt'})
+ok: [10.60.158.108] => (item={u'value': u'MYSQL_USER=quantri', u'key': u'MYSQL_USER=quantri'})
+ok: [10.60.158.107] => (item={u'value': u'MYSQL_USER=quantri', u'key': u'MYSQL_USER=quantri'})
+
+TASK [Copy MariaDB backup_mysql sql file] **************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Configure MariaDB backup table] ******************************************
+skipping: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Allow MariaDB user to use crontab] ***************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Create cronjob to enable service MariaDB after reboot] *******************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Create cronjob to backup MariaDB] ****************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Replace OS default repository file] **************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Install keepalived service] **********************************************
+fatal: [10.60.158.108]: FAILED! => {"changed": false, "msg": "http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30004 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30003 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30003 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30002 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30004 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\n\n\n One of the configured repositories failed (VTnetCentralRepo-CentOS-7 - Plus),\n and yum doesn't have enough cached data to continue. At this point the only\n safe thing yum can do is fail. There are a few ways to work \"fix\" this:\n\n     1. Contact the upstream for the repository and get them to fix the problem.\n\n     2. Reconfigure the baseurl/etc. for the repository, to point to a working\n        upstream. This is most often useful if you are using a newer\n        distribution release than is supported by the repository (and the\n        packages for the previous distribution release still work).\n\n     3. Run the command with the repository temporarily disabled\n            yum --disablerepo=centosplus ...\n\n     4. Disable the repository permanently, so yum won't use it by default. Yum\n        will then just ignore the repository until you permanently enable it\n        again or use --enablerepo for temporary usage:\n\n            yum-config-manager --disable centosplus\n        or\n            subscription-manager repos --disable=centosplus\n\n     5. Configure the failing repository to be skipped, if it is unavailable.\n        Note that yum will try to contact the repo. when it runs most commands,\n        so will have to try and fail each time (and thus. yum will be be much\n        slower). If it is a very temporary problem though, this is often a nice\n        compromise:\n\n            yum-config-manager --save --setopt=centosplus.skip_if_unavailable=true\n\nfailure: repodata/repomd.xml from centosplus: [Errno 256] No more mirrors to try.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30004 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\n", "rc": 1, "results": []}
+fatal: [10.60.158.107]: FAILED! => {"changed": false, "msg": "http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30009 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30010 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30008 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/os/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30011 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30013 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30013 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30034 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30002 milliseconds')\nTrying other mirror.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nTrying other mirror.\n\n\n One of the configured repositories failed (VTnetCentralRepo-CentOS-7 - Plus),\n and yum doesn't have enough cached data to continue. At this point the only\n safe thing yum can do is fail. There are a few ways to work \"fix\" this:\n\n     1. Contact the upstream for the repository and get them to fix the problem.\n\n     2. Reconfigure the baseurl/etc. for the repository, to point to a working\n        upstream. This is most often useful if you are using a newer\n        distribution release than is supported by the repository (and the\n        packages for the previous distribution release still work).\n\n     3. Run the command with the repository temporarily disabled\n            yum --disablerepo=centosplus ...\n\n     4. Disable the repository permanently, so yum won't use it by default. Yum\n        will then just ignore the repository until you permanently enable it\n        again or use --enablerepo for temporary usage:\n\n            yum-config-manager --disable centosplus\n        or\n            subscription-manager repos --disable=centosplus\n\n     5. Configure the failing repository to be skipped, if it is unavailable.\n        Note that yum will try to contact the repo. when it runs most commands,\n        so will have to try and fail each time (and thus. yum will be be much\n        slower). If it is a very temporary problem though, this is often a nice\n        compromise:\n\n            yum-config-manager --save --setopt=centosplus.skip_if_unavailable=true\n\nfailure: repodata/repomd.xml from centosplus: [Errno 256] No more mirrors to try.\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30013 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30013 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30001 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30034 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30002 milliseconds')\nhttp://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: [Errno 12] Timeout on http://10.60.129.132/repository/Centos_Mirror/centos/7/centosplus/x86_64/repodata/repomd.xml: (28, 'Connection timed out after 30000 milliseconds')\n", "rc": 1, "results": []}
+
+PLAY RECAP *********************************************************************
+10.60.158.107              : ok=28   changed=24   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+10.60.158.108              : ok=28   changed=24   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+
+
+Setup failed
+May 06, 2022 5:35:15 PM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Finish playbook
+

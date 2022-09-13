@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="WS_SR_GNOC2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/WS_SR_GNOC2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

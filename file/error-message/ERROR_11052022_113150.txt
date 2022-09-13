@@ -1,0 +1,103 @@
+May 11, 2022 11:31:50 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 11, 2022 11:31:51 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_Inventory_11052022_110846 success
+May 11, 2022 11:31:51 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_playbook_11052022_110846.yml success
+May 11, 2022 11:31:52 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_uninstall_playbook_06052022_101604.yml success
+ATTT@123
+[sudo] password for app: 
+10.60.158.108 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+10.60.158.107 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+ATTT@123
+[sudo] password for app: 
+
+PLAY [Install MariaDB Master-to-Master Replication] ****************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Modify OS max process, max openfiles] ************************************
+ok: [10.60.158.108] => (item=mysql soft nofile 1000000)
+ok: [10.60.158.107] => (item=mysql soft nofile 1000000)
+ok: [10.60.158.108] => (item=mysql hard nofile 1000000)
+ok: [10.60.158.107] => (item=mysql hard nofile 1000000)
+ok: [10.60.158.108] => (item=mysql soft nproc 1000000)
+ok: [10.60.158.107] => (item=mysql soft nproc 1000000)
+ok: [10.60.158.108] => (item=mysql hard nproc 1000000)
+ok: [10.60.158.107] => (item=mysql hard nproc 1000000)
+
+TASK [Modify OS swappiness] ****************************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Change vm.swappiness value immediately] **********************************
+changed: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Add MariaDB rules in iptables] *******************************************
+ok: [10.60.158.108] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.107] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.108] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+ok: [10.60.158.107] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Add VRRP rules in iptables] **********************************************
+ok: [10.60.158.108] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.107] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+ok: [10.60.158.108] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+ok: [10.60.158.107] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Restart iptables service] ************************************************
+changed: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Check iptables service status] *******************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Create MariaDB installation user] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Add MariaDB enviroment variables] ****************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Create MariaDB installation directories] *********************************
+ok: [10.60.158.107] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+ok: [10.60.158.107] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+ok: [10.60.158.107] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+ok: [10.60.158.108] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+ok: [10.60.158.107] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+ok: [10.60.158.107] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+ok: [10.60.158.107] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+
+TASK [Extract the files from the MariaDB tarball] ******************************
+fatal: [10.60.158.108]: FAILED! => {"changed": false, "msg": "Could not find or access '/home/app/ansible_mariadb/mariadb-10.5.10-linux-x86_64.tar.gz' on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+fatal: [10.60.158.107]: FAILED! => {"changed": false, "msg": "Could not find or access '/home/app/ansible_mariadb/mariadb-10.5.10-linux-x86_64.tar.gz' on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+
+PLAY RECAP *********************************************************************
+10.60.158.107              : ok=11   changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+10.60.158.108              : ok=11   changed=4    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
+
+Setup failed

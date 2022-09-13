@@ -1,0 +1,2 @@
+May 16, 2022 10:14:11 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Inventory Record doesnt exist

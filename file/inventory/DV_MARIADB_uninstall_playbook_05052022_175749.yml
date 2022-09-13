@@ -1,0 +1,75 @@
+---
+- name: Uninstall MariaDB Master-to-Master Replication
+  become: true
+  hosts: mariadb
+  tasks: 
+    - name: Delete MariaDB enviroment variables
+      lineinfile:
+        path: /home/mysql/.bash_profile
+        line: "{{ enviroment }}"
+        state: absent
+      become_user: mysql
+
+    - name: Stop MariaDB service
+      command:
+        chdir: "{{ mariadb_dir.bin}}/mariadb-10.5.10-linux-x86_64/support-files/"
+        cmd: './mysql.server stop'
+
+    - name: Delete MariaDB installation user
+      user:
+        name: mysql
+        state: absent
+
+    - name: Delete MariaDB installation directories
+      file:
+        path: "{{ item.value }}"
+        state: absent
+        owner: mysql
+        group: mysql
+      loop: "{{ mariadb_dir | dict2items }}"
+
+    - name: Delete MariaDB rules in iptables
+      lineinfile:
+        path: /etc/sysconfig/iptables
+        insertbefore: '{{ item.key }}'
+        line: '{{ item.value }}'
+        state: absent
+      loop: "{{ lookup('dict', iptables_mariadb) }}"
+
+    - name: Delete vrrp rules in iptables
+      lineinfile:
+        path: /etc/sysconfig/iptables
+        insertbefore: '{{ item.key }}'
+        line: '{{ item.value }}'
+        state: absent
+      loop: "{{ lookup('dict', iptables_vrrp) }}"
+
+    - name: Restore OS max process, max openfiles to default
+      lineinfile:
+        path: /etc/security/limits.conf
+        line: '{{ item }}'
+        state: absent
+      loop: "{{ max_proc_openfiles }}"
+
+    - name: Revert OS swappiness to defaults
+      lineinfile:
+        path: /etc/sysctl.conf
+        regexp: "{{ swappiness.position }}"
+        line: "swappiness={{ swappiness.value }}"
+        state: absent
+      ignore_errors: true
+
+    - name: Uninstall service keepalived
+      yum:
+        name: keepalived
+        state: absent
+      tags: ductt15
+
+    - name: Forbid MariaDB user to use crontab
+      lineinfile:
+        path: /etc/cron.allow
+        line: 'mysql'
+        state: absent
+
+
+

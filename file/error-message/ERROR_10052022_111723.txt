@@ -1,0 +1,5 @@
+May 10, 2022 11:17:24 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 10, 2022 11:17:25 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: 
+3: Permission denied

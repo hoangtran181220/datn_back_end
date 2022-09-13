@@ -1,0 +1,4 @@
+May 04, 2022 1:28:32 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: null
+May 04, 2022 1:28:53 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: java.net.ConnectException: Connection timed out: connect

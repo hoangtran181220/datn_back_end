@@ -1,0 +1,19 @@
+
+R
+java:S2629D"7Use the built-in formatting to construct this argument.(åÂœùÿÿÿÿ
+M
+java:S2629V"7Use the built-in formatting to construct this argument.(ü ó
+w
+java:S2629h"\Invoke method(s) only conditionally. Use the built-in formatting to construct this argument.(ñ´Á€ÿÿÿÿÿ
+\
+java:S3457D"AFormat specifiers should be used instead of string concatenation.(åÂœùÿÿÿÿ
+W
+java:S3457V"AFormat specifiers should be used instead of string concatenation.(ü ó
+\
+java:S3457h"AFormat specifiers should be used instead of string concatenation.(ñ´Á€ÿÿÿÿÿ
++
+java:S3457l"Not enough arguments.(òŸ›¿
+a
+java:S1128"FRemove this unused import 'com.viettel.vhkt.entity.ServerGroupEntity'.(€ò½Èùÿÿÿÿ
+S
+java:S1128"=Remove this unused import 'com.viettel.vhkt.entity.SrEntity'.(àô˜‚

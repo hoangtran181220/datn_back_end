@@ -1,0 +1,33 @@
+May 10, 2022 11:05:43 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 10, 2022 11:05:54 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_Inventory_10052022_110256 success
+May 10, 2022 11:06:05 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_playbook_10052022_110256.yml success
+May 10, 2022 11:06:15 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_uninstall_playbook_06052022_143430.yml success
+May 10, 2022 11:06:43 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 10, 2022 11:06:45 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: ansible -iDV_MARIADB_Inventory_10052022_110256 -m ping all 
+May 10, 2022 11:08:01 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running playbook
+
+May 10, 2022 11:08:01 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i DV_MARIADB_Inventory_10052022_110256 DV_MARIADB_playbook_10052022_110256.yml
+May 10, 2022 11:08:06 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+com.jcraft.jsch.JSchException: channel request: timeout
+May 10, 2022 11:08:06 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Start send request update SR
+May 10, 2022 11:08:07 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null
+May 10, 2022 11:08:07 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Start send request update SR
+May 10, 2022 11:08:07 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null
+May 10, 2022 11:08:07 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Start send request update SR
+May 10, 2022 11:08:07 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null

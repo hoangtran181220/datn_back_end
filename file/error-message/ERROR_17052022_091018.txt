@@ -1,0 +1,9 @@
+May 17, 2022 9:10:34 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 17, 2022 9:10:35 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220516_161407.yml success
+May 17, 2022 9:10:35 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: 
+java.io.FileNotFoundException: upload\2022-05-161\mariadb_uninstall_playbook_220516_161409.yml (The system cannot find the file specified)
+May 17, 2022 9:10:35 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: java.lang.NullPointerException

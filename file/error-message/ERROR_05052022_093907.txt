@@ -1,0 +1,21 @@
+May 05, 2022 9:39:07 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 05, 2022 9:39:08 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 05, 2022 9:39:09 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 05, 2022 9:39:10 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_uninstall_playbook_220504_114355.yml success
+May 05, 2022 9:39:10 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 05, 2022 9:39:10 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running playbook
+
+May 05, 2022 9:39:10 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_playbook_220504_114352.yml
+
+Setup failedMay 05, 2022 9:39:10 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Finish playbook
+

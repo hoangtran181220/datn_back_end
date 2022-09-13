@@ -1,0 +1,280 @@
+May 05, 2022 10:32:26 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 05, 2022 10:32:42 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 05, 2022 10:32:50 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 05, 2022 10:32:59 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_uninstall_playbook_220504_114355.yml success
+May 05, 2022 10:33:06 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 05, 2022 10:33:06 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running uninstall
+May 05, 2022 10:33:06 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_uninstall_playbook_220504_114355.yml
+May 05, 2022 10:33:47 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Finish uninstall
+May 05, 2022 10:33:47 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running playbook
+
+May 05, 2022 10:33:47 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_playbook_220504_114352.yml
+[sudo] password for app: 
+
+PLAY [Uninstall MariaDB Master-to-Master Replication] **************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [10.60.158.107]
+ok: [10.60.158.108]
+
+TASK [Delete MariaDB enviroment variables] *************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Stop MariaDB service] ****************************************************
+changed: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Delete MariaDB installation user] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Delete MariaDB installation directories] *********************************
+changed: [10.60.158.108] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+ok: [10.60.158.108] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+ok: [10.60.158.107] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+changed: [10.60.158.108] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+
+TASK [Delete MariaDB rules in iptables] ****************************************
+changed: [10.60.158.108] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.108] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Delete vrrp rules in iptables] *******************************************
+changed: [10.60.158.108] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.108] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Restore OS max process, max openfiles to default] ************************
+changed: [10.60.158.108] => (item=mysql soft nofile 1000000)
+changed: [10.60.158.107] => (item=mysql soft nofile 1000000)
+changed: [10.60.158.108] => (item=mysql hard nofile 1000000)
+changed: [10.60.158.107] => (item=mysql hard nofile 1000000)
+changed: [10.60.158.108] => (item=mysql soft nproc 1000000)
+changed: [10.60.158.107] => (item=mysql soft nproc 1000000)
+changed: [10.60.158.108] => (item=mysql hard nproc 1000000)
+changed: [10.60.158.107] => (item=mysql hard nproc 1000000)
+
+TASK [Revert OS swappiness to defaults] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Uninstall service keepalived] ********************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Forbid MariaDB user to use crontab] **************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+PLAY RECAP *********************************************************************
+10.60.158.107              : ok=11   changed=9    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+10.60.158.108              : ok=11   changed=9    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[sudo] password for app: 
+
+PLAY [Install MariaDB Master-to-Master Replication] ****************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [10.60.158.108]
+ok: [10.60.158.107]
+
+TASK [Modify OS max process, max openfiles] ************************************
+changed: [10.60.158.108] => (item=mysql soft nofile 1000000)
+changed: [10.60.158.107] => (item=mysql soft nofile 1000000)
+changed: [10.60.158.108] => (item=mysql hard nofile 1000000)
+changed: [10.60.158.107] => (item=mysql hard nofile 1000000)
+changed: [10.60.158.108] => (item=mysql soft nproc 1000000)
+changed: [10.60.158.107] => (item=mysql soft nproc 1000000)
+changed: [10.60.158.108] => (item=mysql hard nproc 1000000)
+changed: [10.60.158.107] => (item=mysql hard nproc 1000000)
+
+TASK [Modify OS swappiness] ****************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Change vm.swappiness value immediately] **********************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Add MariaDB rules in iptables] *******************************************
+changed: [10.60.158.108] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A OUTPUT -d 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.108] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A INPUT -s 10.60.158.108,10.60.158.107 -p tcp -m state --state NEW -m tcp -m multiport --dports 22,3306,4567 -m comment --comment "Khai bao MariaDB" -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Add VRRP rules in iptables] **********************************************
+changed: [10.60.158.108] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A OUTPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.output.*'})
+changed: [10.60.158.108] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+changed: [10.60.158.107] => (item={u'value': u'-A INPUT -p 112 -d 224.0.0.18 -j ACCEPT', u'key': u'.*Dropped.input.*'})
+
+TASK [Restart iptables service] ************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Check iptables service status] *******************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Create MariaDB installation user] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Add MariaDB enviroment variables] ****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Create MariaDB installation directories] *********************************
+changed: [10.60.158.108] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'bin', u'value': u'/u01/mariadb'})
+changed:May 05, 2022 10:36:26 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 05, 2022 10:36:27 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 05, 2022 10:36:27 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 05, 2022 10:36:28 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_uninstall_playbook_220504_114355.yml success
+May 05, 2022 10:36:28 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 05, 2022 10:36:28 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running uninstall
+May 05, 2022 10:36:28 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_uninstall_playbook_220504_114355.yml
+ [10.60.158.107] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'tmp', u'value': u'/data/temp_db/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+changed: [10.60.158.108] => (item={u'key': u'script_backup', u'value': u'/u01/mariadb/script_backup'})
+changed: [10.60.158.108] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'logs', u'value': u'/logs/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'data', u'value': u'/data/mariadb'})
+changed: [10.60.158.108] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+changed: [10.60.158.107] => (item={u'key': u'backup', u'value': u'/backup/mariadb'})
+
+TASK [Extract the files from the MariaDB tarball] ******************************
+changed: [10.60.158.107]
+changed: [10.60.158.108]
+
+TASK [Modify MariaDB support-files] ********************************************
+changed: [10.60.158.108] => (item={u'value': u'libexecdir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'libexecdir=/usr/local/mysql/bin'})
+changed: [10.60.158.107] => (item={u'value': u'libexecdir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'libexecdir=/usr/local/mysql/bin'})
+changed: [10.60.158.108] => (item={u'value': u'bindir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'bindir=/usr/local/mysql/bin'})
+changed: [10.60.158.107] => (item={u'value': u'bindir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/bin', u'key': u'bindir=/usr/local/mysql/bin'})
+changed: [10.60.158.108] => (item={u'value': u'basedir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/', u'key': u'basedir=/usr/local/mysql'})
+changed: [10.60.158.107] => (item={u'value': u'basedir=/u01/mariadb/mariadb-10.5.10-linux-x86_64/', u'key': u'basedir=/usr/local/mysql'})
+changed: [10.60.158.108] => (item={u'value': u'datadir=/data/mariadb', u'key': u'datadir=/usr/local/mysql/data'})
+changed: [10.60.158.107] => (item={u'value': u'datadir=/data/mariadb', u'key': u'datadir=/usr/local/mysql/data'})
+
+TASK [Replace MariaDB default config file] *************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify MariaDB config file] **********************************************
+changed: [10.60.158.108] => (item={u'value': u'socket = /data/mariadb/mysql.sock', u'key': u'socket = /u01/database/mysql.sock'})
+changed: [10.60.158.107] => (item={u'value': u'socket = /data/mariadb/mysql.sock', u'key': u'socket = /u01/database/mysql.sock'})
+changed: [10.60.158.108] => (item={u'value': u'tmpdir = /data/temp_db/mariadb', u'key': u'tmpdir = /temp_db'})
+changed: [10.60.158.107] => (item={u'value': u'tmpdir = /data/temp_db/mariadb', u'key': u'tmpdir = /temp_db'})
+changed: [10.60.158.108] => (item={u'value': u'slow-query-log-file = /logs/mariadb/mysqld.slow.log', u'key': u'slow_query_log_file = /var/log/mysql/mysqld.slow.log'})
+changed: [10.60.158.107] => (item={u'value': u'slow-query-log-file = /logs/mariadb/mysqld.slow.log', u'key': u'slow_query_log_file = /var/log/mysql/mysqld.slow.log'})
+changed: [10.60.158.108] => (item={u'value': u'pid-file = /data/mariadb/mysqld.pid', u'key': u'pid-file = /u01/database/mysql.pid'})
+changed: [10.60.158.107] => (item={u'value': u'pid-file = /data/mariadb/mysqld.pid', u'key': u'pid-file = /u01/database/mysql.pid'})
+changed: [10.60.158.108] => (item={u'value': u'innodb_buffer_pool_size = 5G', u'key': u'innodb_buffer_pool_size = 11G'})
+changed: [10.60.158.107] => (item={u'value': u'innodb_buffer_pool_size = 5G', u'key': u'innodb_buffer_pool_size = 11G'})
+changed: [10.60.158.108] => (item={u'value': u'log-error = /logs/mariadb/mysqld-error.log', u'key': u'log-error = /var/log/mysql/mysqld.error.log'})
+changed: [10.60.158.108] => (item={u'value': u'datadir = /data/mariadb', u'key': u'datadir = /u01/database'})
+changed: [10.60.158.107] => (item={u'value': u'log-error = /logs/mariadb/mysqld-error.log', u'key': u'log-error = /var/log/mysql/mysqld.error.log'})
+changed: [10.60.158.108] => (item={u'value': u'log-bin = /logs/mariadb/binlog', u'key': u'log-bin = /logs/binlog'})
+changed: [10.60.158.107] => (item={u'value': u'datadir = /data/mariadb', u'key': u'datadir = /u01/database'})
+changed: [10.60.158.107] => (item={u'value': u'log-bin = /logs/mariadb/binlog', u'key': u'log-bin = /logs/binlog'})
+
+TASK [Modify replication configuration] ****************************************
+skipping: [10.60.158.108] => (item={u'value': u'server-id = 2', u'key': u'server-id = 1'}) 
+skipping: [10.60.158.108] => (item={u'value': u'auto_increment_offset = 2', u'key': u'auto_increment_offset = 1'}) 
+changed: [10.60.158.107] => (item={u'value': u'server-id = 2', u'key': u'server-id = 1'})
+changed: [10.60.158.107] => (item={u'value': u'auto_increment_offset = 2', u'key': u'auto_increment_offset = 1'})
+
+TASK [Initializing the Data Directory] *****************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Start MariaDB service] ***************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Modify root user MariaDB] ************************************************
+changed: [10.60.158.108]
+changed: [10.60.158.107]
+
+TASK [Configure replication on Master] *****************************************
+skipping: [10.60.158.107] => (item="CREATE  USER 'repl'@'10.60.158.107' IDENTIFIED BY 'Viettel#123';") 
+skipping: [10.60.158.107] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.107';") 
+skipping: [10.60.158.107] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.107', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;") 
+skipping: [10.60.158.107] => (item="FLUSH PRIVILEGES;") 
+skipping: [10.60.158.107] => (item="reset master; ") 
+skipping: [10.60.158.107] => (item="start slave; ") 
+changed: [10.60.158.108] => (item="CREATE  USER 'repl'@'10.60.158.107' IDENTIFIED BY 'Viettel#123';")
+changed: [10.60.158.108] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.107';")
+changed: [10.60.158.108] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.107', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;")
+changed: [10.60.158.108] => (item="FLUSH PRIVILEGES;")
+changed: [10.60.158.108] => (item="reset master; ")
+changed: [10.60.158.108] => (item="start slave; ")
+
+TASK [Configure replication on Slave] ******************************************
+skipping: [10.60.158.108] => (item="CREATE  USER 'repl'@'10.60.158.108' IDENTIFIED BY 'Viettel#123';") 
+skipping: [10.60.158.108] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.108';") 
+skipping: [10.60.158.108] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.108', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;") 
+skipping: [10.60.158.108] => (item="FLUSH PRIVILEGES;") 
+skipping: [10.60.158.108] => (item="reset master; ") 
+skipping: [10.60.158.108] => (item="start slave; ") 
+changed: [10.60.158.107] => (item="CREATE  USER 'repl'@'10.60.158.108' IDENTIFIED BY 'Viettel#123';")
+changed: [10.60.158.107] => (item="GRANT  REPLICATION  SLAVE  ON *.* TO 'repl'@'10.60.158.108';")
+changed: [10.60.158.107] => (item="CHANGE MASTER TO MASTER_HOST = '10.60.158.108', MASTER_USER = 'repl', MASTER_PASSWORD = 'Viettel#123', MASTER_PORT = 3306;")
+changed: [10.60.158.107] => (item="FLUSH PRIVILEGES;")
+changed: [10.60.158.107] => (item="reset master; ")
+changed: [10.60.158.107] => (item="start slave; ")
+
+TASK [Check replication status MariaDB] ****************************************
+changed: [10.60.158.107]
+FAILED - RETRYING: Check replication status MariaDB (20 retries left).
+FAILED - RETRYING: Check replication status MariaDB (19 retries left).
+FAILED - RETRYING: Check replication status MariaDB (18 retries left).
+fatal: [10.60.158.108]: FAILED! => {"msg": "Failed to change ownership of the temporary files Ansible needs to create despite connecting as a privileged user. Unprivileged become user would be unable to read the file."}
+
+TASK [Create MariaDB backup file] **********************************************
+fatal: [10.60.158.107]: FAILED! => {"changed": false, "checksum": "252a7ac4de9ba3daa52a249a15fdf73de057daeb", "msg": "Destination directory /u01/mariadb/script_backup does not exist"}
+
+PLAY RECAP *********************************************************************
+10.60.158.107              : ok=21   changed=20   unreachable=0    failed=1    skipped=1    rescued=0    ignored=0   
+10.60.158.108              : ok=19   changed=18   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+
+
+Setup failedMay 05, 2022 10:36:58 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Finish playbook
+

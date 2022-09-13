@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig">
+    <option name="defaultUnitInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="9bbd16b1-276a-48e6-bb3d-c84cf12638e6" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/com/viettel/vhkt/entity" />
+    <option name="newEntityIdStrategy" />
+  </component>
+</project>

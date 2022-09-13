@@ -1,0 +1,262 @@
+---
+- name: Install MariaDB Master-to-Master Replication
+  become: true
+  hosts: all
+  tasks: 
+    - name: Modify OS max process, max openfiles
+      lineinfile:
+        path: /etc/security/limits.conf
+        line: '{{ item }}'
+      loop: "{{ max_proc_openfiles }}"
+
+    - name: Modify OS swappiness
+      lineinfile:
+        path: /etc/sysctl.conf
+        regexp: "{{ swappiness.position }}" 
+        line: "vm.swappiness={{ swappiness.value }}" 
+
+    - name: Change vm.swappiness value immediately
+      shell:
+        cmd: "/sbin/sysctl -p"
+
+    - name: Add MariaDB rules in iptables
+      lineinfile:
+        path: /etc/sysconfig/iptables
+        insertbefore: '{{ item.key }}'
+        line: '{{ item.value }}'
+      loop: "{{ lookup('dict', iptables_mariadb) }}"
+
+    - name: Add VRRP rules in iptables
+      lineinfile:
+        path: /etc/sysconfig/iptables
+        insertbefore: '{{ item.key }}'
+        line: '{{ item.value }}'
+      loop: "{{ lookup('dict', iptables_vrrp) }}"
+
+    - name: Restart iptables service
+      service:
+        name: iptables
+        state: restarted
+
+    - name: Check iptables service status
+      command:
+        cmd: systemctl status iptables
+      register: iptables_result
+      failed_when: "'inactive' in iptables_result.stdout"
+
+    - name: Create MariaDB installation user
+      user:
+        name: mysql
+        password: "{{ mariadb_user_password | password_hash('sha512') }}"
+
+    - name: Add MariaDB enviroment variables
+      lineinfile:
+        path: /home/mysql/.bash_profile
+        line: "{{ enviroment }}"
+      become_user: mysql
+
+    - name: Create MariaDB installation directories
+      file:
+        path: "{{ item.value }}"
+        state: directory
+        owner: mysql
+        group: mysql
+      loop: "{{ mariadb_dir | dict2items }}"
+
+    - name: Extract the files from the MariaDB tarball
+      unarchive:
+        dest: "{{ mariadb_dir.bin }}"
+        src: "{{ mariadb_tarball_location }}"
+        owner: mysql
+        group: mysql
+
+    - name: Modify MariaDB support-files
+      replace:
+        path: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/support-files/mysql.server' 
+        regexp: '{{ item.key }}'
+        replace: '{{ item.value }}'
+      loop: "{{ lookup('dict', support_files) }}"  
+
+    - name: Replace MariaDB default config file
+      copy:
+        dest: /etc/my.cnf
+        src: "{{ ansible_directory }}/my.cnf"
+        owner: mysql
+        group: mysql
+
+    - name: Modify MariaDB config file
+      replace:
+        path: '/etc/my.cnf'
+        regexp: '{{ item.key }}'
+        replace: '{{ item.value }}'
+      loop: "{{ lookup('dict', mariadb_conf) }}"
+
+    - name: Modify replication configuration
+      replace:
+        path: '/etc/my.cnf'
+        regexp: '{{ item.key }}'
+        replace: '{{ item.value }}'
+      loop: "{{ lookup('dict', slave_conf) }}"
+      when: "'slave' in group_names"
+
+    - name: Initializing the Data Directory
+      command:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/scripts/'
+        cmd: './mysql_install_db --basedir={{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64'
+
+    - name: Start MariaDB service
+      command:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/support-files/'
+        cmd: './mysql.server start'
+      register: result 
+      failed_when: "'SUCCESS' not in result.stdout" 
+      become_user: mysql
+
+    - name: Modify root user MariaDB
+      command:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/bin/'
+        cmd: "./mysql -Bse {{ modify_root_cmd }}"
+      become_user: mysql
+
+    - name: Configure replication on Master
+      command:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/bin/'
+        cmd: "./mysql -uquantri -pViettel#2021 -Bse {{ item }}"
+      become_user: mysql
+      loop: "{{ master_repl_cmd }}"
+      when: "'master' in group_names"
+
+    - name: Configure replication on Slave
+      command:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/bin/'
+        cmd: "./mysql -uquantri -pViettel#2021 -Bse {{ item }}"
+      become_user: mysql
+      loop: "{{ slave_repl_cmd }}"
+      when: "'slave' in group_names"
+
+    - name: Check replication status MariaDB
+      command:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/bin/'
+        cmd: "./mysql -uquantri -pViettel#2021 -e {{ repl_status_cmd }}"
+      become_user: mysql
+      register: repl_result
+      until: "'Slave_IO_Running: Yes' in repl_result.stdout and 'Slave_SQL_Running: Yes' in repl_result.stdout"
+      retries: 20
+      delay: 10
+
+    - name: Create MariaDB backup file
+      copy:
+        dest: '{{ mariadb_dir.script_backup }}/backup.sh'
+        src: "{{ ansible_directory }}/backup.sh"
+        owner: mysql
+        group: mysql
+        mode: 0755
+
+    - name: Modify MariaDB backup file
+      replace:
+        path: '{{ mariadb_dir.script_backup }}/backup.sh'
+        regexp: '{{ item.key }}'
+        replace: '{{ item.value }}'
+      loop: "{{ lookup('dict', backup_conf) }}"
+
+    - name: Copy MariaDB backup_mysql sql file
+      copy:
+        dest: '{{ mariadb_dir.script_backup }}/backup_mysql.sql'
+        src: "{{ ansible_directory }}/backup_mysql.sql"
+        owner: mysql
+        group: mysql
+
+    - name: Configure MariaDB backup table
+      shell:
+        chdir: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/bin/'
+        cmd: "./mysql -uquantri -pViettel#2021 mysql < /u01/mariadb/script_backup/backup_mysql.sql"
+      become_user: mysql
+      when: "'master' in group_names"
+
+    - name: Allow MariaDB user to use crontab
+      lineinfile:
+        path: /etc/cron.allow
+        line: 'mysql'
+
+    - name: Create cronjob to enable service MariaDB after reboot
+      cron:
+        name: enable_mariadb
+        special_time: reboot
+        job: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/support-files/mysql.server start'
+        user: "mysql"
+
+    - name: Create cronjob to backup MariaDB
+      cron:
+        name: backup_mariadb
+        minute: '0'
+        hour: '0' 
+        job: '{{ mariadb_dir.script_backup }}/backup.sh'
+        user: "mysql"
+
+    - name: Replace OS default repository file
+      copy:
+        dest: /etc/yum.repos.d/CentOS-Base.repo
+        src: "{{ ansible_directory }}/CentOS-Base.repo"
+
+    - name: Install keepalived service
+      yum:
+        name: keepalived
+        state: latest  
+
+    - name: Copy MariaDB status checking script
+      copy:
+        dest: /etc/keepalived/mariadbcheck.sh
+        src: "{{ ansible_directory }}/mariadbcheck.sh"
+        mode: 0700
+
+    - name: Modify MariaDB status checking script
+      replace:
+        path: '/etc/keepalived/mariadbcheck.sh'
+        regexp: '/u01/mariadb/bin/mysql'
+        replace: '{{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/bin/mysql'
+
+    - name: Copy keepalived.conf to master
+      copy:
+        dest: /etc/keepalived/keepalived.conf
+        src: "{{ ansible_directory }}/keepalived_master.conf"
+      when: "'master' in group_names"
+
+    - name: Copy keepalived.conf to slave
+      copy:
+        dest: /etc/keepalived/keepalived.conf
+        src: "{{ ansible_directory }}/keepalived_slave.conf"
+      when: "'slave' in group_names"
+
+    - name: Modify keepalived.conf file
+      replace:
+        path: '/etc/keepalived/keepalived.conf'
+        regexp: '{{ item.key }}'
+        replace: '{{ item.value }}'
+      loop: "{{ lookup('dict', keepalived_conf) }}"
+      tags: keepalived
+
+    - name: Enable and start keepalived service
+      service:
+        name: keepalived
+        state: started
+        enabled: yes
+
+    - name: Check keepalived service status
+      command:
+        cmd: systemctl status keepalived
+      register: keepalived_result
+      failed_when: "'inactive' in keepalived_result.stdout"
+
+    - name: Display post install message
+      debug:
+        msg:
+          - 'Thông tin MariaDB Master-to-Master Replication:'
+          - '- OS User/Password: mysql/{{ mariadb_user_password }}.'
+          - '- Database User/Password: quantri/Viettel#2021.'
+          - '- Port Database: 3306.'
+          - "- IP node Master là: {{ master_ip }}."
+          - "- IP node Slave là: {{ slave_ip }}."
+          - "- IP VIP là: {{ ip_vip }}."
+          - "- Cách bật Database: {{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/support-files/mysql.server start"
+          - "- Cách tăt Database: {{ mariadb_dir.bin }}/mariadb-10.5.10-linux-x86_64/support-files/mysql.server stop"
+      when: "'master' in group_names"

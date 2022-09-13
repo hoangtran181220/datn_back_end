@@ -1,0 +1,26 @@
+
+M
+java:S2629H"7Use the built-in formatting to construct this argument.(—¨Íê
+M
+java:S2629Z"7Use the built-in formatting to construct this argument.(š‡«Ð
+w
+java:S2629l"\Invoke method(s) only conditionally. Use the built-in formatting to construct this argument.(¡èº§ûÿÿÿÿ
+O
+java:S3416"9Update this logger to use "ServerGroupServiceImpl.class".(ÐÜæŽ
+W
+java:S3457H"AFormat specifiers should be used instead of string concatenation.(—¨Íê
+W
+java:S3457Z"AFormat specifiers should be used instead of string concatenation.(š‡«Ð
+\
+java:S3457l"AFormat specifiers should be used instead of string concatenation.(¡èº§ûÿÿÿÿ
++
+java:S3457p"Not enough arguments.(ºÓü‰
+]
+java:S1128"BRemove this unused import 'com.viettel.vhkt.dto.ServerServiceDTO'.(éà„õýÿÿÿÿ
+W
+java:S1128"<Remove this unused import 'com.viettel.vhkt.dto.StorageDTO'.(ÆÚû‰ýÿÿÿÿ
+^
+java:S1128
+"HRemove this unused import 'com.viettel.vhkt.entity.ServerServiceEntity'.(•ü¡€
+]
+java:S1128"BRemove this unused import 'com.viettel.vhkt.entity.StorageEntity'.(Ë½æÃûÿÿÿÿ

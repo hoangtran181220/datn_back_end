@@ -1,0 +1,8 @@
+May 12, 2022 3:13:17 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 12, 2022 3:13:18 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: MayEleven_Inventory_12052022_151058 success
+May 12, 2022 3:13:19 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: MayEleven_playbook_12052022_151059.yml success
+May 12, 2022 3:13:19 PM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_uninstall_playbook_220511_191408.yml success

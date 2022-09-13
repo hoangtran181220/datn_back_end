@@ -1,0 +1,2 @@
+May 12, 2022 3:24:36 PM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107

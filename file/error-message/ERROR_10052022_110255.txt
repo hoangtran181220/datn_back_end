@@ -1,0 +1,33 @@
+May 10, 2022 11:02:56 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: 10.60.158.107
+May 10, 2022 11:03:07 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: inventory success
+May 10, 2022 11:03:18 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: mariadb_playbook_220504_114352.yml success
+May 10, 2022 11:03:29 AM com.viettel.vhkt.common.SSHUploadFile putFile
+INFO: Copy file: DV_MARIADB_uninstall_playbook_06052022_143430.yml success
+May 10, 2022 11:03:39 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: Host connected
+May 10, 2022 11:03:39 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: ansible -iinventory -m ping all 
+May 10, 2022 11:03:39 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+Start running playbook
+
+May 10, 2022 11:03:39 AM com.viettel.vhkt.common.SSHUploadFile excuteCommand
+INFO: Running command: sudo ansible-playbook -i inventory mariadb_playbook_220504_114352.yml
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile executeCommand
+INFO: 
+com.jcraft.jsch.JSchException: channel request: timeout
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Start send request update SR
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Start send request update SR
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Start send request update SR
+May 10, 2022 11:03:44 AM com.viettel.vhkt.common.SSHUploadFile sendRequestUpdateSR
+INFO: Error send Request to GNOC: java.lang.IllegalArgumentException: host parameter is null

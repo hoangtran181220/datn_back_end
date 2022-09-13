@@ -1,0 +1,14 @@
+all:
+  children:
+    mariadb:
+      children:
+        slave:
+          hosts:
+            10.60.158.107
+        master:
+          hosts:
+            10.60.158.108
+      vars:
+        virtual_router_id: '109'
+        ip_vip: '10.60.158.109'
+

@@ -1,0 +1,4 @@
+May 04, 2022 11:58:42 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: Telnet to address: null
+May 04, 2022 11:58:44 AM com.viettel.vhkt.service.FileInventoryServiceImpl setupService
+INFO: java.net.ConnectException: Connection refused: connect
